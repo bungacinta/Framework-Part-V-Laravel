@@ -6,6 +6,11 @@ use App\Http\Controllers\KategoriBukuController;
 use App\Http\Controllers\PenerbitController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+
 
 Route::get('/hai', [HaiController::class, 'index']); 
 
@@ -40,6 +45,24 @@ Route::post('/tag', [TagController::class,'store']);
 Route::get('/tag/{id}/edit', [TagController::class,'edit']);
 Route::put('/tag/{id}', [TagController::class,'update']);
 Route::delete('/tag/{id}', [TagController::class,'destroy']);
+
+Route::get('/user', [UserController::class,'index'])->name('user');
+Route::get('/user.create', [UserController::class,'create']);
+Route::post('/user', [UserController::class,'store']);
+Route::get('/user.cari', [UserController::class,'search']);
+Route::get('/user.{id}.edit', [UserController::class,'edit']);
+Route::put('/user.{id}', [UserController::class,'update']);
+Route::get('/user.{id}', [UserController::class,'show']);
+Route::delete('/user.{id}', [UserController::class,'destroy']); 
+
+Route::get('login', [AuthController::class, 'showLoginForm'])->
+name('login');
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->
+name('logout');
+Route::middleware('auth')->get('/profil', [AuthController::class,
+'showProfil'])->name('profil');
+
 
 Route::fallback(function(){
     return "Halaman Tidak Ditemukan";
